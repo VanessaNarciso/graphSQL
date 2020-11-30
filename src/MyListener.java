@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public class MyListener extends GraphQLBaseListener {
     ArrayList<Query> queries = new ArrayList<>();
-    Query currentQuery = new Query();
+    Query currentQuery = null;
     Integer level = 1;
     /**
      * {@inheritDoc}
@@ -64,7 +64,15 @@ public class MyListener extends GraphQLBaseListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override public void exitOperationDefinition(GraphQLParser.OperationDefinitionContext ctx) {
-        this.queries.remove(this.queries.size() - 1);
+        System.out.println(this.queries);
+        ArrayList<Query> temp = new ArrayList<>();
+        for (Query query : this.queries) {
+            if(query.table !=null) {
+                temp.add(query);
+            }
+        }
+        this.queries = temp;
+
     }
     /**
      * {@inheritDoc}
@@ -85,6 +93,7 @@ public class MyListener extends GraphQLBaseListener {
      */
     @Override public void enterSelectionSet(GraphQLParser.SelectionSetContext ctx) {
 
+
     }
     /**
      * {@inheritDoc}
@@ -92,8 +101,13 @@ public class MyListener extends GraphQLBaseListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override public void exitSelectionSet(GraphQLParser.SelectionSetContext ctx) {
-        this.queries.add(this.currentQuery);
-        this.currentQuery = new Query();
+        if(this.currentQuery.parentQuery!= null) {
+            this.currentQuery = currentQuery.parentQuery;
+            this.level = 2;
+        } else {
+            this.queries.add(this.currentQuery);
+            this.currentQuery = new Query();
+        }
     }
     /**
      * {@inheritDoc}
@@ -104,7 +118,21 @@ public class MyListener extends GraphQLBaseListener {
 
         if(ctx.field().selectionSet()!= null) {
             level = 1;
+            if(this.currentQuery != null) {
+                Query childQuery = new Query();
+                childQuery.parentQuery = this.currentQuery;
+                this.currentQuery.fields.add(childQuery);
+                this.currentQuery = childQuery;
+            } else {
+                this.currentQuery = new Query();
+            }
+            if(ctx.field().alias()!= null){
+                this.currentQuery = new Query();
+                this.level = 1;
+            }
+
         } else {
+
             level = 2;
         }
 
@@ -115,7 +143,9 @@ public class MyListener extends GraphQLBaseListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override public void exitSelection(GraphQLParser.SelectionContext ctx) {
-
+        if(ctx.field().alias()!= null){
+            this.queries.add(this.currentQuery);
+        }
     }
     /**
      * {@inheritDoc}

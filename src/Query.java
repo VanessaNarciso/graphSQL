@@ -12,6 +12,7 @@ public class Query {
     public Query() {
         this.attributes = new ArrayList<>();
         this.conditions = new ArrayList<>();
+        this.fields = new ArrayList<>();
     }
 
 }

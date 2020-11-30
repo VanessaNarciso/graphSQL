@@ -21,36 +21,47 @@ public class Main {
             ParseTreeWalker walker = new ParseTreeWalker();
             MyListener listener = new MyListener();
             walker.walk(listener, tree);
-            ArrayList<String> statements = buildStatements(listener.queries);
+            buildStatements(listener.queries);
 
-            System.out.println(listener.queries);
+            execute
 
     }
 
+    public static ArrayList<String> statements = new ArrayList<>();
+
     public static ArrayList<String> buildStatements(ArrayList<Query> queries) {
         ArrayList<String> result = new ArrayList<>();
-        for(Integer i = 0; i < queries.size(); i++) {
+
+        for (Query query : queries) {
+            String statement = buildStatement(query);
+            query.statement = statement;
+            buildStatements(query.fields);
+            result.add(statement);
+            statements.add(statement);
+        }
+        return result;
+    }
+
+    public static String buildStatement(Query query) {
+
             String attributes = "";
-            for(Integer k = 0; k < queries.get(i).attributes.size(); k++){
-                attributes = attributes + queries.get(i).attributes.get(k) + ", ";
+            for(Integer k = 0; k < query.attributes.size(); k++){
+                attributes = attributes + query.attributes.get(k) + ", ";
             }
             attributes = attributes.substring(0, attributes.length() - 2);
-            String statement = "SELECT " + attributes + " FROM " + queries.get(i).table;
+            String statement = "SELECT " + attributes + " FROM " + query.table;
 
-            if(queries.get(i).conditions.size() > 0) {
+            if(query.conditions.size() > 0) {
                 String conditions = "";
 
-                for(Integer k = 0; k < queries.get(i).conditions.size(); k++){
-                    String key = queries.get(i).conditions.get(k).keySet().toArray()[0].toString();
-                    conditions = conditions + key + "=" + queries.get(i).conditions.get(k).get(key) + " AND ";
+                for(Integer k = 0; k < query.conditions.size(); k++){
+                    String key = query.conditions.get(k).keySet().toArray()[0].toString();
+                    conditions = conditions + key + "=" + query.conditions.get(k).get(key) + " AND ";
                 }
                 conditions = conditions.substring(0, conditions.length() - 5);
                 statement = statement + " WHERE " + conditions;
             }
-            queries.get(i).statement = statement;
-            result.add(statement);
-        }
-        return result;
+        return statement;
     }
 
 
