@@ -101,15 +101,11 @@ public class MyListener extends GraphQLBaseListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override public void enterSelection(GraphQLParser.SelectionContext ctx) {
-        Integer depth = ctx.depth();
 
-        switch (depth) {
-            case 6:
-                this.level = 1;
-                break;
-            case 9:
-                this.level = 2;
-                break;
+        if(ctx.field().selectionSet()!= null) {
+            level = 1;
+        } else {
+            level = 2;
         }
 
     }
