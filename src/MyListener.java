@@ -1,314 +1,942 @@
-import javax.print.attribute.standard.PrinterMessageFromOperator;
-import java.util.*;
+// Generated from /Users/vanessanarciso/Desktop/Compiladores2/graphSQL/src/GraphQL.g4 by ANTLR 4.8
 
-public class MyListener extends GraphQLBaseListener{
-    @Override
-    public void exitDocument(GraphQLParser.DocumentContext ctx) {
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.tree.ErrorNode;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
-        super.exitDocument(ctx);
+import java.util.ArrayList;
+import java.util.HashMap;
+
+/**
+ * This class provides an empty implementation of {@link GraphQLListener},
+ * which can be extended to create a listener which only needs to handle a subset
+ * of the available methods.
+ */
+public class MyListener extends GraphQLBaseListener {
+    ArrayList<Query> queries = new ArrayList<>();
+    Query currentQuery = new Query();
+    Integer level = 1;
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterDocument(GraphQLParser.DocumentContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitDocument(GraphQLParser.DocumentContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterDefinition(GraphQLParser.DefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitDefinition(GraphQLParser.DefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterExecutableDefinition(GraphQLParser.ExecutableDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitExecutableDefinition(GraphQLParser.ExecutableDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterOperationDefinition(GraphQLParser.OperationDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitOperationDefinition(GraphQLParser.OperationDefinitionContext ctx) {
+        this.queries.remove(this.queries.size() - 1);
     }
-
-    /* Stack<Integer> pila = new Stack<>();
-    Stack<Character> pOper = new Stack<>();
-    Stack<String> idtemp = new Stack<>();
-    String label;
-    int valuetemp;
-
-
-
-    @Override
-    public void exitExpr(ExprParser.ExprContext ctx) {
-
-        if(ctx.ID().size() != 0){
-            Program.labels.put(ctx.ID(0).getText(), Program.progs.size());
-        }
-        System.out.println("EL RESULTADO DE LA EXPR ES:" + valuetemp);
-    }
-
-    @Override
-    public void exitGoTo(ExprParser.GoToContext ctx) {
-        if(ctx.ID().size() == 2){
-            Program.labels.put(ctx.ID(0).getText(), Program.progs.size());
-            label = ctx.ID(1).getText();
-        }else{
-            label = ctx.ID(0).getText();
-        }
-        Label l = new Label(label);
-        GoTo gt = new GoTo(l);
-        Program.progs.add(gt);
-    }
-
-    @Override
-    public void exitIfTrue(ExprParser.IfTrueContext ctx) {
-        if(ctx.ID().size() == 2){
-            Program.labels.put(ctx.ID(0).getText(), Program.progs.size());
-            label = ctx.ID(1).getText();
-        }else{
-            label = ctx.ID(0).getText();
-        }
-        Label l = new Label(label);
-        ifTrue ift = new ifTrue(valuetemp, l);
-        Program.progs.add(ift);
-    }
-
-
-    @Override
-    public void exitIfFalse(ExprParser.IfFalseContext ctx) {
-        if(ctx.ID().size() == 2){
-            Program.labels.put(ctx.ID(0).getText(), Program.progs.size());
-            label = ctx.ID(1).getText();
-        }else{
-            label = ctx.ID(0).getText();
-        }
-        Label l = new Label(label);
-        ifFalse iff = new ifFalse(valuetemp, l);
-        Program.progs.add(iff);
-        //System.out.println("EXIT IFFALSE");
-    }
-
-    @Override
-    public void exitPrint(ExprParser.PrintContext ctx) {
-        String var;
-        if(ctx.ID().size() == 2){
-            Program.labels.put(ctx.ID(0).getText(), Program.progs.size());
-            var = ctx.ID(1).getText();
-        }else{
-            var = ctx.ID(0).getText();
-        }
-
-        Print prnt = new Print(var);
-        Program.progs.add(prnt);
-    }
-
-
-    @Override
-    public void exitAssign(ExprParser.AssignContext ctx) {
-        //System.out.println(ctx.ID());
-
-        if(ctx.ID().size() != 0){
-            Program.labels.put(ctx.ID(0).getText(), Program.progs.size());
-            //System.out.println(Program.progs.size() + "   LINE:   " + Program.labels.get(ctx.ID(0).getText()));
-
-        }
-
-        System.out.println("ASSIGNAND " + valuetemp + " A " );
-
-        Program.vari.put(idtemp.pop(),valuetemp);
-
-
-        //System.out.println(valuetemp + "   IS EQUAL   " + Program.vari.get(idtemp));
-        /*Assign s1 = new Assign(idtemp.pop(), valuetemp);
-        Program.progs.add(s1);
-    }
-
-    @Override
-    public void exitAcc(ExprParser.AccContext ctx) {
-
-        if(ctx.getChildCount()==3){
-            Array arr = new Array(ctx.ID().getText());
-            Program.arrays.put(ctx.ID().getText(), arr);
-        }
-        //System.out.println("CTX" + ctx.getText());
-        if(ctx.ID().getText() != null) {
-
-            if(Program.vari.get(ctx.ID().getText() )!= null){
-                pila.push(Program.vari.get(ctx.ID().getText()));
-                System.out.println("VALOR EN MAPA" + Program.vari.get(ctx.ID().getText()));
-            }else{
-                idtemp.push(ctx.ID().getText());
-            }
-        }
-
-
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterOperationType(GraphQLParser.OperationTypeContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitOperationType(GraphQLParser.OperationTypeContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterSelectionSet(GraphQLParser.SelectionSetContext ctx) {
 
     }
-
-
-
-    @Override
-    public void enterBool(ExprParser.BoolContext ctx) {
-        if(ctx.getChildCount() == 3) {
-            if (ctx.getChild(1).getText().equals("&&")) {
-                //System.out.println("&&");
-                pOper.add('&');
-            } else if (ctx.getChild(1).getText().equals("==")) {
-                //System.out.println("==");
-                pOper.add('=');
-            }else if (ctx.getChild(1).getText().equals("||")) {
-                //System.out.println("||");
-                pOper.add('|');
-            }
-        }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitSelectionSet(GraphQLParser.SelectionSetContext ctx) {
+        this.queries.add(this.currentQuery);
+        this.currentQuery = new Query();
     }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterSelection(GraphQLParser.SelectionContext ctx) {
+        Integer depth = ctx.depth();
 
-    @Override
-    public void exitBool(ExprParser.BoolContext ctx) {
-        if(!pOper.empty()) {
-            if (pOper.peek() == '&') {
-                pOper.pop();
-                int a = pila.pop();
-                int b = pila.pop();
-                if(b ==10004 && a == 10004){
-                    System.out.println("10004");
-                    pila.push(10004);
-                }else{
-                    System.out.println("0");
-                    pila.push(0);
+        switch (depth) {
+            case 6:
+                this.level = 1;
+                break;
+            case 9:
+                this.level = 2;
+                break;
+        }
+
+    }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitSelection(GraphQLParser.SelectionContext ctx) {
+
+    }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterField(GraphQLParser.FieldContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitField(GraphQLParser.FieldContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterArguments(GraphQLParser.ArgumentsContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitArguments(GraphQLParser.ArgumentsContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterArgument(GraphQLParser.ArgumentContext ctx) {
+        HashMap<String, String> condition = new HashMap<>();
+        condition.put(ctx.name().getText(), ctx.value().stringValue().getText());
+        this.currentQuery.conditions.add(condition);
+    }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitArgument(GraphQLParser.ArgumentContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterAlias(GraphQLParser.AliasContext ctx) {
+        this.level = 3;
+    }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitAlias(GraphQLParser.AliasContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterFragmentSpread(GraphQLParser.FragmentSpreadContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitFragmentSpread(GraphQLParser.FragmentSpreadContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterFragmentDefinition(GraphQLParser.FragmentDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitFragmentDefinition(GraphQLParser.FragmentDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterFragmentName(GraphQLParser.FragmentNameContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitFragmentName(GraphQLParser.FragmentNameContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterTypeCondition(GraphQLParser.TypeConditionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitTypeCondition(GraphQLParser.TypeConditionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterInlineFragment(GraphQLParser.InlineFragmentContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitInlineFragment(GraphQLParser.InlineFragmentContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterValue(GraphQLParser.ValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitValue(GraphQLParser.ValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterIntValue(GraphQLParser.IntValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitIntValue(GraphQLParser.IntValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterFloatValue(GraphQLParser.FloatValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitFloatValue(GraphQLParser.FloatValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterBooleanValue(GraphQLParser.BooleanValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitBooleanValue(GraphQLParser.BooleanValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterStringValue(GraphQLParser.StringValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitStringValue(GraphQLParser.StringValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterNullValue(GraphQLParser.NullValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitNullValue(GraphQLParser.NullValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterEnumValue(GraphQLParser.EnumValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitEnumValue(GraphQLParser.EnumValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterListValue(GraphQLParser.ListValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitListValue(GraphQLParser.ListValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterObjectValue(GraphQLParser.ObjectValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitObjectValue(GraphQLParser.ObjectValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterObjectField(GraphQLParser.ObjectFieldContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitObjectField(GraphQLParser.ObjectFieldContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterVariable(GraphQLParser.VariableContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitVariable(GraphQLParser.VariableContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterVariableDefinitions(GraphQLParser.VariableDefinitionsContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitVariableDefinitions(GraphQLParser.VariableDefinitionsContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterVariableDefinition(GraphQLParser.VariableDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitVariableDefinition(GraphQLParser.VariableDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterDefaultValue(GraphQLParser.DefaultValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitDefaultValue(GraphQLParser.DefaultValueContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterType_(GraphQLParser.Type_Context ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitType_(GraphQLParser.Type_Context ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterNamedType(GraphQLParser.NamedTypeContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitNamedType(GraphQLParser.NamedTypeContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterListType(GraphQLParser.ListTypeContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitListType(GraphQLParser.ListTypeContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterDirectives(GraphQLParser.DirectivesContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitDirectives(GraphQLParser.DirectivesContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterDirective(GraphQLParser.DirectiveContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitDirective(GraphQLParser.DirectiveContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterTypeSystemDefinition(GraphQLParser.TypeSystemDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitTypeSystemDefinition(GraphQLParser.TypeSystemDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterTypeSystemExtension(GraphQLParser.TypeSystemExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitTypeSystemExtension(GraphQLParser.TypeSystemExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterSchemaDefinition(GraphQLParser.SchemaDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitSchemaDefinition(GraphQLParser.SchemaDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterRootOperationTypeDefinition(GraphQLParser.RootOperationTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitRootOperationTypeDefinition(GraphQLParser.RootOperationTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterSchemaExtension(GraphQLParser.SchemaExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitSchemaExtension(GraphQLParser.SchemaExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterOperationTypeDefinition(GraphQLParser.OperationTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitOperationTypeDefinition(GraphQLParser.OperationTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterDescription(GraphQLParser.DescriptionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitDescription(GraphQLParser.DescriptionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterTypeDefinition(GraphQLParser.TypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitTypeDefinition(GraphQLParser.TypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterTypeExtension(GraphQLParser.TypeExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitTypeExtension(GraphQLParser.TypeExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterScalarTypeDefinition(GraphQLParser.ScalarTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitScalarTypeDefinition(GraphQLParser.ScalarTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterScalarTypeExtension(GraphQLParser.ScalarTypeExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitScalarTypeExtension(GraphQLParser.ScalarTypeExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterObjectTypeDefinition(GraphQLParser.ObjectTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitObjectTypeDefinition(GraphQLParser.ObjectTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterImplementsInterfaces(GraphQLParser.ImplementsInterfacesContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitImplementsInterfaces(GraphQLParser.ImplementsInterfacesContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterFieldsDefinition(GraphQLParser.FieldsDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitFieldsDefinition(GraphQLParser.FieldsDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterFieldDefinition(GraphQLParser.FieldDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitFieldDefinition(GraphQLParser.FieldDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterArgumentsDefinition(GraphQLParser.ArgumentsDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitArgumentsDefinition(GraphQLParser.ArgumentsDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterInputValueDefinition(GraphQLParser.InputValueDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitInputValueDefinition(GraphQLParser.InputValueDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterObjectTypeExtension(GraphQLParser.ObjectTypeExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitObjectTypeExtension(GraphQLParser.ObjectTypeExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterInterfaceTypeDefinition(GraphQLParser.InterfaceTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitInterfaceTypeDefinition(GraphQLParser.InterfaceTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterInterfaceTypeExtension(GraphQLParser.InterfaceTypeExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitInterfaceTypeExtension(GraphQLParser.InterfaceTypeExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterUnionTypeDefinition(GraphQLParser.UnionTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitUnionTypeDefinition(GraphQLParser.UnionTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterUnionMemberTypes(GraphQLParser.UnionMemberTypesContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitUnionMemberTypes(GraphQLParser.UnionMemberTypesContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterUnionTypeExtension(GraphQLParser.UnionTypeExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitUnionTypeExtension(GraphQLParser.UnionTypeExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterEnumTypeDefinition(GraphQLParser.EnumTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitEnumTypeDefinition(GraphQLParser.EnumTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterEnumValuesDefinition(GraphQLParser.EnumValuesDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitEnumValuesDefinition(GraphQLParser.EnumValuesDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterEnumValueDefinition(GraphQLParser.EnumValueDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitEnumValueDefinition(GraphQLParser.EnumValueDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterEnumTypeExtension(GraphQLParser.EnumTypeExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitEnumTypeExtension(GraphQLParser.EnumTypeExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterInputObjectTypeDefinition(GraphQLParser.InputObjectTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitInputObjectTypeDefinition(GraphQLParser.InputObjectTypeDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterInputFieldsDefinition(GraphQLParser.InputFieldsDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitInputFieldsDefinition(GraphQLParser.InputFieldsDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterInputObjectTypeExtension(GraphQLParser.InputObjectTypeExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitInputObjectTypeExtension(GraphQLParser.InputObjectTypeExtensionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterDirectiveDefinition(GraphQLParser.DirectiveDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitDirectiveDefinition(GraphQLParser.DirectiveDefinitionContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterDirectiveLocations(GraphQLParser.DirectiveLocationsContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitDirectiveLocations(GraphQLParser.DirectiveLocationsContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterDirectiveLocation(GraphQLParser.DirectiveLocationContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitDirectiveLocation(GraphQLParser.DirectiveLocationContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterExecutableDirectiveLocation(GraphQLParser.ExecutableDirectiveLocationContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitExecutableDirectiveLocation(GraphQLParser.ExecutableDirectiveLocationContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterTypeSystemDirectiveLocation(GraphQLParser.TypeSystemDirectiveLocationContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitTypeSystemDirectiveLocation(GraphQLParser.TypeSystemDirectiveLocationContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterName(GraphQLParser.NameContext ctx) {
+
+
+        String name = ctx.NAME().getText();
+
+        switch (level) {
+            case 1:
+                if (this.currentQuery.table == null) {
+                    this.currentQuery.table = name;
                 }
-
-            } else if (pOper.peek() == '|') {
-                pOper.pop();
-                int a = pila.pop();
-                int b = pila.pop();
-                if(b ==10004 || a == 10004){
-                    System.out.println("10004");
-                    pila.push(10004);
-                }else{
-                    System.out.println("0");
-                    pila.push(0);
-                }
-            }else if (pOper.peek() == '=') {
-                pOper.pop();
-                int a = pila.pop();
-                int b = pila.pop();
-                if(b==a){
-                    System.out.println("10004");
-                    pila.push(10004);
-                }else{
-                    System.out.println("0");
-                    pila.push(0);
-                }
-            }
+                break;
+            case 2: this.currentQuery.attributes.add(name);
+                break;
+            case 3:
+                this.currentQuery.alias = name;
+                this.level = 1;
+                break;
         }
-        System.out.println("Bool size: " + pila.size() + " poper: " + pOper.size());
-        valuetemp = pila.pop();
-        System.out.println(valuetemp);
 
     }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitName(GraphQLParser.NameContext ctx) { }
 
-    @Override
-    public void enterRel(ExprParser.RelContext ctx) {
-        if(ctx.getChildCount() == 3) {
-            if (ctx.getChild(1).getText().equals("<")) {
-                System.out.println("<");
-                pOper.add('<');
-            }
-        }
-    }
-
-    @Override
-    public void exitRel(ExprParser.RelContext ctx) {
-        if(!pOper.empty()) {
-            if (pOper.peek() == '<') {
-                int a = pila.pop();
-                int b = pila.pop();
-
-                pOper.pop();
-                if(b<a ){
-                    System.out.println("10004");
-                    pila.push(10004);
-                }else{
-                    System.out.println("0");
-                    pila.push(0);
-                }
-            }
-        }
-        System.out.println("Rel size: " + pila.size() + " poper: " + pOper.size());
-
-    }
-
-    @Override
-    public void enterAdd(ExprParser.AddContext ctx) {
-
-        if(ctx.getChildCount() == 3) {
-            if (ctx.getChild(1).getText().equals("+")) {
-                System.out.println("+");
-                pOper.add('+');
-            } else if (ctx.getChild(1).getText().equals("-")) {
-                System.out.println("-");
-                pOper.add('-');
-            }
-        }
-    }
-
-    @Override
-    public void exitAdd(ExprParser.AddContext ctx) {
-        if(!pOper.empty()) {
-            if (pOper.peek() == '+') {
-                int a = pila.pop();
-                int b = pila.pop();
-                System.out.println(a+b);
-                pila.push(a + b);
-                pOper.pop();
-            } else if (pOper.peek() == '-') {
-
-                int a = pila.pop();
-                int b = pila.pop();
-                System.out.println(b-a);
-                pila.push(b-a);
-                pOper.pop();
-            }
-        }
-        System.out.println("Add size: " + pila.size() + " poper: " + pOper.size());
-
-    }
-
-    @Override
-    public void enterTerm(ExprParser.TermContext ctx) {
-        if(ctx.getChildCount() == 3) {
-            if (ctx.getChild(1).getText().equals("*")) {
-                System.out.println("*");
-                pOper.add('*');
-            } else if (ctx.getChild(1).getText().equals("/")) {
-                System.out.println("/");
-                pOper.add('/');
-            }
-        }
-    }
-
-    @Override
-    public void exitTerm(ExprParser.TermContext ctx) {
-        if(!pOper.empty()) {
-            if (pOper.peek() == '*') {
-                int a = pila.pop();
-                int b = pila.pop();
-                System.out.println(a*b);
-                pila.push(a * b);
-                pOper.pop();
-            } else if (pOper.peek() == '/') {
-                int a = pila.pop();
-                int b = pila.pop();
-                System.out.println(b/a);
-                pila.push(b/a);
-                pOper.pop();
-            }
-        }
-        System.out.println("Term size: " + pila.size() + " poper: " + pOper.size());
-    }
-
-    @Override
-    public void exitFactor(ExprParser.FactorContext ctx) {
-
-
-        System.out.println(ctx.getText());
-
-
-        if (ctx.getText() == null) {
-            System.out.println("NOT" );
-        }
-        try {
-            int d = Integer.parseInt(ctx.getText());
-            pila.push(d);
-        } catch (NumberFormatException nfe) {
-            System.out.println("NOT" );
-        }
-        /*if(ctx.NUM().getText() != null ) {
-            System.out.println("CTX" + Integer.parseInt(ctx.NUM().getText()));
-            pila.push(Integer.parseInt(ctx.NUM().getText()));
-            System.out.println(ctx.NUM().getText());
-        }
-
-        System.out.println("Factor size: " + pila.size() + " poper: " + pOper.size());
-    }
-*/
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void enterEveryRule(ParserRuleContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void exitEveryRule(ParserRuleContext ctx) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void visitTerminal(TerminalNode node) { }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override public void visitErrorNode(ErrorNode node) { }
 }
