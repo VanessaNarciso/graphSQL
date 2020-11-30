@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.tree.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 public class Main {
@@ -22,12 +23,15 @@ public class Main {
             MyListener listener = new MyListener();
             walker.walk(listener, tree);
             buildStatements(listener.queries);
+            execute(listener.queries);
+            System.out.println(data);
 
-            execute
+
 
     }
 
     public static ArrayList<String> statements = new ArrayList<>();
+    public static String data = "";
 
     public static ArrayList<String> buildStatements(ArrayList<Query> queries) {
         ArrayList<String> result = new ArrayList<>();
@@ -35,9 +39,10 @@ public class Main {
         for (Query query : queries) {
             String statement = buildStatement(query);
             query.statement = statement;
+            statements.add(statement);
             buildStatements(query.fields);
             result.add(statement);
-            statements.add(statement);
+
         }
         return result;
     }
@@ -56,12 +61,24 @@ public class Main {
 
                 for(Integer k = 0; k < query.conditions.size(); k++){
                     String key = query.conditions.get(k).keySet().toArray()[0].toString();
-                    conditions = conditions + key + "=" + query.conditions.get(k).get(key) + " AND ";
+                    conditions = conditions + key + "=" + query.conditions.get(k).get(key).replaceAll("\"", "'") + " AND ";
                 }
                 conditions = conditions.substring(0, conditions.length() - 5);
                 statement = statement + " WHERE " + conditions;
             }
         return statement;
+    }
+
+    public static String execute(ArrayList<Query> queries) {
+
+        String result = "";
+        for (Query query: queries) {
+            Conexion.query(query.statement);
+            if(query.fields.size() > 0) {
+                execute(query.fields);
+            }
+        }
+        return result;
     }
 
 

@@ -1,58 +1,100 @@
+//=====================================================================
+//
+//  File:    connectURL.java      
+//  Summary: This Microsoft JDBC Driver for SQL Server sample application
+//	     demonstrates how to connect to a SQL Server database by using
+//	     a connection URL. It also demonstrates how to retrieve data 
+//	     from a SQL Server database by using an SQL statement.
+//
+//---------------------------------------------------------------------
+//
+//  This file is part of the Microsoft JDBC Driver for SQL Server Code Samples.
+//  Copyright (C) Microsoft Corporation.  All rights reserved.
+//
+//  This source code is intended only as a supplement to Microsoft
+//  Development Tools and/or on-line documentation.  See these other
+//  materials for detailed information regarding Microsoft code samples.
+//
+//  THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF 
+//  ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO 
+//  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+//  PARTICULAR PURPOSE.
+//
+//===================================================================== 
+
 import java.sql.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+
 public class Conexion {
-    private String user;
-    private String password;
-    private String db;
-    private String host;
-    private String url;
-    private Connection conn = null;
-    private Statement stm;
-    private ResultSet rs;
-    public Conexion(String usuario, String contrasena, String bd, String servidor)
-    {
-        this.user = usuario;
-        this.password = contrasena;
-        this.db = bd;
-        this.host = servidor;
-        this.url = "jdbc:mysql://" + this.host + "/" + this.db;
-    }
-    public void conectar()
-    {
+
+    public static String leeArchivo(String archivo) {
+        StringBuilder sb = new StringBuilder();
         try {
-            Class.forName("org.gjt.mm.mysql.Driver");
-            conn = DriverManager.getConnection(url, user, password);
-            if (conn != null)
-            {
-                System.out.println("Conexión a base de datos "+url+" ... Ok");
-                stm = conn.createStatement();
+            File a = new File(archivo);
+            Scanner sc = new Scanner(a);
+            while (sc.hasNextLine()) {
+                sb.append(sc.nextLine() + "\n");
             }
+            sc.close();
         }
-        catch(SQLException ex) {
-            System.out.println("Hubo un problema al intentar conectarse con la base de datos "+url);
+        catch(FileNotFoundException e) {
         }
-        catch(ClassNotFoundException ex) {
-            System.out.println(ex);
+        return sb.toString();
+    }
+
+    public static ArrayList<HashMap<String, String>> query(String SQL) {
+        SQL = "USE escuela; " + SQL;
+
+        // Create a variable for the connection string.
+        String connectionUrl = "jdbc:sqlserver://localhost:1433;" +
+                "databaseName=AdventureWorks;integratedSecurity=false;";
+
+        // Declare the JDBC objects.
+        Connection con = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        ResultSetMetaData rsmd;
+
+        try {
+            // Establish the connection.
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            con = DriverManager.getConnection(connectionUrl,"sa","Compiladores@2020");
+
+            // Create and execute an SQL statement that returns some data.
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+            rsmd = rs.getMetaData();
+            ArrayList<HashMap<String, String>> values = new ArrayList<>();
+            ArrayList<String> keys = new ArrayList<>();
+            for(int i = 1; i <= rsmd.getColumnCount(); i++) {
+                System.out.printf("%40s", rsmd.getColumnLabel(i));
+            }
+            System.out.println();
+            // Iterate through the data in the result set and display it.
+            while (rs.next()) {
+                for(int i = 1; i <= rsmd.getColumnCount(); i++) {
+                    System.out.printf("%40s",rs.getString(i));
+                }
+                System.out.println();
+            }
+            return values;
         }
-    }
-    public void consultar() throws SQLException
-    {
-        rs = stm.executeQuery("SELECT * FROM usuarios");
-        while(rs.next())
-        {
-            System.out.println(rs.getString("nombre"));
-            System.out.println(rs.getString("contraseña"));
+
+        // Handle any errors that may have occurred.
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-    }
-    public void actualizar() throws SQLException
-    {
-        stm.execute("UPDATE usuarios SET nombre='nombre usuario' WHERE id="+1);
-    }
-    public void insertar() throws SQLException
-    {
-        stm.execute("INSERT INTO usuarios (nombre, contrasena) VALUES ('new_name', 'new_Pass')");
-    }
-    public void eliminar() throws SQLException
-    {
-        stm.execute("DELETE FROM usuarios WHERE id="+1);
+
+        finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
     }
 }
+

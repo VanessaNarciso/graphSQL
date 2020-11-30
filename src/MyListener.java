@@ -925,7 +925,7 @@ public class MyListener extends GraphQLBaseListener {
                     this.currentQuery.table = name;
                 }
                 break;
-            case 2: this.currentQuery.attributes.add(name);
+            case 2: this.currentQuery.attributes.add(name.replaceAll("\"", "'"));
                 break;
             case 3:
                 this.currentQuery.alias = name;
