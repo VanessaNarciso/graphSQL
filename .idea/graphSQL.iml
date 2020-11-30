@@ -11,5 +11,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="antlr-4.8-complete" level="project" />
+    <orderEntry type="library" name="mssql-jdbc-8.4.1.jre8" level="project" />
   </component>
 </module>
